@@ -1,0 +1,11 @@
+# IDE Folders/Files
+.vscode
+
+# ESP-IDF Folders/Files
+.devcontainer
+build/
+sdkconfig
+sdkconfig.old
+managed_components
+components/espressif__esp32-camera
+components/WiFi/WiFiConfig.h
