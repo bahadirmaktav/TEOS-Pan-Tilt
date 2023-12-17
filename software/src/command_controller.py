@@ -32,7 +32,7 @@ class CommandController:
   async def rotate_motor(self, motor: Motor, angle):
     rotate_command = bytearray(COMMAND_LENGTH)
     rotate_command[0] = 0xFF
-    rotate_command[1] = 0x01
+    rotate_command[1] = 0x02
     rotate_command[2] = motor.value
     rotate_command[3] = 0x01
     angle = int(angle * 100)
