@@ -44,16 +44,11 @@ class CommandManager:
     rotate_command = bytearray(COMMAND_LENGTH)
     rotate_command[0] = 0xFF
     rotate_command[1] = 0x02
-    rotate_command[2] = motor.value
-    rotate_command[3] = 0x01
+    rotate_command[2] = int(motor.value) & 0xFF
     angle = int(angle * 100)
-    rotate_command[4] = (angle >> 8) & 0xFF
-    rotate_command[5] = angle & 0xFF
-    rotate_command[7] = 0x00
+    rotate_command[3] = (angle >> 8) & 0xFF
+    rotate_command[4] = angle & 0xFF    
     await self.websocket_client.send_message(rotate_command)
-
-  async def stop_motor(self, motor: Motor):
-    logger.info("Stop motor command has not been implemented yet.")
 
   # Mode controls
   async def set_manual_mode(self):

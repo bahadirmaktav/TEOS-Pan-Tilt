@@ -64,12 +64,12 @@ void CommandHandler::MotorCommandHandler(uint8_t *command) {
   int motor_type = command[2];
   if (motor_type == 1) {
     // Rotate pan
-    float angle = ((int)command[4] * 256 + (int)command[5]) / 100.0;
+    float angle = ((int)command[3] * 256 + (int)command[4]) / 100.0;
     ESP_LOGI(TAG, "Pan motor rotation to %f degree started.", angle);
     pan_motor_controller_->RotateToAngle(angle);
   } else if (motor_type == 2) {
     // Rotate tilt
-    float angle = ((int)command[4] * 256 + (int)command[5]) / 100.0;
+    float angle = ((int)command[3] * 256 + (int)command[4]) / 100.0;
     ESP_LOGI(TAG, "Tilt motor rotation to %f degree started.", angle);
     tilt_motor_controller_->RotateToAngle(angle);
   }

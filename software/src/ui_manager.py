@@ -1,6 +1,7 @@
 import logging
 import tkinter as tk
 import asyncio
+from src.command_manager import Motor
 
 logger = logging.getLogger(__name__)
 
@@ -35,6 +36,7 @@ class UiManager(tk.Tk):
     self.motor_controls_label.place(x=0, y=105, width=150, height=40)
     self.angle = tk.Entry(self)
     self.angle.place(x=0, y=150, width=100, height=40)
+    self.angle.bind('<KeyRelease>', self.validate_positive_float)
     self.pan_rotate = tk.Button(text="Rotate Pan", command=lambda: self.event_loop.create_task(self.rotate_pan()))
     self.pan_rotate.place(x=105, y=150, width=100, height=40)
     self.tilt_rotate = tk.Button(text="Rotate Tilt", command=lambda: self.event_loop.create_task(self.rotate_tilt()))
@@ -70,9 +72,11 @@ class UiManager(tk.Tk):
 
   async def rotate_pan(self):
     logger.info("Rotate pan button clicked.")
+    await self.command_manager.rotate_motor(Motor.PAN, float(self.angle.get()))
 
   async def rotate_tilt(self):
     logger.info("Rotate tilt button clicked.")
+    await self.command_manager.rotate_motor(Motor.TILT, float(self.angle.get()))
 
   async def connect_websocket_server(self):
     logger.info("Connect to websocket server button clicked.")
@@ -86,3 +90,18 @@ class UiManager(tk.Tk):
     self.image_label.configure(image=image)
     self.image_label.image = image
     self.update_idletasks()
+
+  # Helper functions
+  def validate_positive_float(self, event):
+    try:
+      # Try to convert the entry content to a float
+      value = float(self.angle.get())
+
+      # Check if the value is positive
+      if value < 0:
+        # If negative, set the entry value to 0
+        self.angle.delete(0, tk.END)
+        self.angle.insert(0, '0')
+    except ValueError:
+      # If the conversion to float fails or if it's not a positive number, set the entry value to an empty string
+      self.angle.delete(0, tk.END)

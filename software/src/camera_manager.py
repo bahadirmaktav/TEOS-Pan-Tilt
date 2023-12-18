@@ -31,7 +31,7 @@ class CameraManager:
 
       # Set image to tkinter label to show on window
       await self.ui_manager.set_image_label(image)
-      logger.info("image data received")
+      # logger.info("image data received")
     logger.info("Receiving camera image data thread stopped.")
 
   async def start_receiving_data(self):

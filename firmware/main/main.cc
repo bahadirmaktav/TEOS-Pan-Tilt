@@ -17,11 +17,13 @@ extern "C" {
 #endif
 
 CameraController camera_controller;
-ServoMotorController servo_motor_controller(GPIO_NUM_22, 0.5, 2.5, 50, LEDC_TIMER_10_BIT, 0, 180);
+ServoMotorController pan_motor_controller(GPIO_NUM_13, 0.5, 2.5, 50, LEDC_TIMER_10_BIT, 0, 180);
+ServoMotorController tilt_motor_controller(GPIO_NUM_15, 0.5, 2.5, 50, LEDC_TIMER_10_BIT, 0, 180);
 
 void app_main(void) {
   // Initialize components
   CommandHandler::Instance().SetCameraController(&camera_controller);
+  CommandHandler::Instance().SetServoMotorControllers(&pan_motor_controller, &tilt_motor_controller);
 
   // TODO(MBM) Move NVS into a component.
   // Initialize NVS (Non Volatile Storage)
