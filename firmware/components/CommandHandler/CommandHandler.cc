@@ -43,7 +43,7 @@ void CommandHandler::ExecuteCommand(uint8_t *command, size_t length) {
   } else if (settings_option == 3) {   // System Mode Settings
     // TODO(MBM): Implement later.
   } else {
-    ESP_LOGW(TAG, "Settings option cannot be found!");
+    ESP_LOGW(TAG, "Settings option cannot be found! Given option: %d", settings_option);
   }
 }
 
@@ -56,7 +56,7 @@ void CommandHandler::CameraCommandHandler(uint8_t *command) {
     // Stop camera
     camera_controller_->StopCamera();
   } else {
-    ESP_LOGW(TAG, "Given camera control type(data[2]) cannot be found!");
+    ESP_LOGW(TAG, "Given camera control mode cannot be found! Given mode: %d", camera_control_mode);
   }
 }
 
@@ -64,12 +64,12 @@ void CommandHandler::MotorCommandHandler(uint8_t *command) {
   int motor_type = command[2];
   if (motor_type == 1) {
     // Rotate pan
-    float angle = ((int)command[4] * 256 + (int)command[5]) / 100.0;
+    float angle = ((int)command[3] * 256 + (int)command[4]) / 100.0;
     ESP_LOGI(TAG, "Pan motor rotation to %f degree started.", angle);
     pan_motor_controller_->RotateToAngle(angle);
   } else if (motor_type == 2) {
     // Rotate tilt
-    float angle = ((int)command[4] * 256 + (int)command[5]) / 100.0;
+    float angle = ((int)command[3] * 256 + (int)command[4]) / 100.0;
     ESP_LOGI(TAG, "Tilt motor rotation to %f degree started.", angle);
     tilt_motor_controller_->RotateToAngle(angle);
   }

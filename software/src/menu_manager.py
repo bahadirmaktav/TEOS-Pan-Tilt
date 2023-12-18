@@ -1,11 +1,8 @@
-from src.command_controller import CommandController
-from src.command_controller import Motor
-import asyncio
-import re
+from software.src.command_manager import Motor
 
-class MenuController:
-  def __init__(self, command_controller):
-    self.command_controller = command_controller
+class MenuManager:
+  def __init__(self, command_manager):
+    self.command_manager = command_manager
 
   def main_menu(self):
     print("\n######### Main Menu #########")
@@ -41,9 +38,9 @@ class MenuController:
           self.camera_control_menu()
           camera_control_choice = input("Enter your choice: ")
           if camera_control_choice == '1':
-            await self.command_controller.start_camera()
+            await self.command_manager.start_camera()
           elif camera_control_choice == '2':
-            await self.command_controller.stop_camera()
+            await self.command_manager.stop_camera()
           elif camera_control_choice == '0':
             break
           else:
@@ -67,7 +64,7 @@ class MenuController:
                   break
                 motor = Motor(int(motor_choice))
                 print(f"{motor.name} will be rotated to {abs(angle)} degrees.")
-                await self.command_controller.rotate_motor(motor, abs(angle))
+                await self.command_manager.rotate_motor(motor, abs(angle))
               elif motor_control_choice == '0':
                 break
               else:
@@ -81,7 +78,7 @@ class MenuController:
         print("Mode control settings have not been implemented yet.")
         pass
       elif choice == '0':
-        await self.command_controller.close_websocket_conenction()
+        await self.command_manager.close_websocket_conenction()
         break
       else:
         print("Invalid choice. Please try again.")

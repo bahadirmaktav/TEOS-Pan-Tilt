@@ -66,7 +66,11 @@ CameraController::CameraController() {
 }
 
 void CameraController::StartCamera() {
-  // Initialize the camera.
+  // Check camear streaming already started
+  if (stream_image_task_handle_ != NULL) {
+    ESP_LOGW(TAG, "Camera already started!");  
+    return;
+  }
   // Library starts the camera in its initialize call (calls cam_start).
   if (esp_camera_init(&camera_config_) != ESP_OK) {
     ESP_LOGE(TAG, "Camera starting failed.");
@@ -79,7 +83,13 @@ void CameraController::StartCamera() {
 }
 
 void CameraController::StopCamera() {
-  // Deinitialize the camera.
+  // Delete stream image thread before deinitialize camera
+  if (stream_image_task_handle_ == NULL) {
+    ESP_LOGW(TAG, "Camera already stopped!");
+    return;
+  }
+  vTaskDelete(stream_image_task_handle_);
+  stream_image_task_handle_ = NULL;
   // Library stops the camera in its deinitialize call (calls cam_stop).
   if (esp_camera_deinit() != ESP_OK) {
     ESP_LOGE(TAG, "Camera stopping failed.");
