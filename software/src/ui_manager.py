@@ -1,5 +1,8 @@
+import logging
 import tkinter as tk
 import asyncio
+
+logger = logging.getLogger(__name__)
 
 class UiManager(tk.Tk):
   def __init__(self, event_loop, command_manager):
@@ -58,29 +61,28 @@ class UiManager(tk.Tk):
       await asyncio.sleep(.1)
 
   async def start_camera(self):
-    print("Start camera clicked.")
+    logger.info("Start camera button clicked.")
     await self.command_manager.start_camera()
 
   async def stop_camera(self):
-    print("Stop camera clicked.")
+    logger.info("Stop camera button clicked.")
     await self.command_manager.stop_camera()  
 
   async def rotate_pan(self):
-    print("Rotate pan clicked.")
+    logger.info("Rotate pan button clicked.")
 
   async def rotate_tilt(self):
-    print("Rotate tilt clicked.")
+    logger.info("Rotate tilt button clicked.")
 
   async def connect_websocket_server(self):
-    print("Connect clicked.")
+    logger.info("Connect to websocket server button clicked.")
     await self.command_manager.connect_websocket_server()
 
   async def disconnect_websocket_server(self):
-    print("Disconnect clicked.")
+    logger.info("Disconnect from websocket server button clicked.")
     await self.command_manager.disconnect_websocket_server()
 
   async def set_image_label(self, image):
     self.image_label.configure(image=image)
     self.image_label.image = image
     self.update_idletasks()
-    # self.update()

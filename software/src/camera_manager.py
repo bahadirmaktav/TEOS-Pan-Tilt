@@ -1,7 +1,9 @@
-import asyncio
+import logging
 import numpy as np
 import cv2
 from PIL import Image, ImageTk
+
+logger = logging.getLogger(__name__)
 
 class CameraManager:
   def __init__(self, event_loop, websocket_client):
@@ -28,3 +30,4 @@ class CameraManager:
 
   async def start_receiving_data(self):
     self.event_loop.create_task(self.receive_camera_data())
+    logger.info("Receiving camera image data thread started.")

@@ -1,9 +1,14 @@
+import logging
 import asyncio
 from src.websocket_client import WebSocketClient
 from src.camera_manager import CameraManager
 from src.command_manager import CommandManager
 from src.ui_manager import UiManager 
 import configs
+
+# Configure the logger
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 class App:
   async def exec(self):
@@ -16,6 +21,7 @@ class App:
 
 if __name__ == "__main__":
   try:
+    logger.info("Application started.")
     asyncio.run(App().exec())
   except KeyboardInterrupt:
-    print("KeyboardInterrupt: Stopping the program.")
+    logger.info("KeyboardInterrupt: Stopping the program.")

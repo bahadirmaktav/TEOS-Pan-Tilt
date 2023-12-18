@@ -1,4 +1,7 @@
+import logging
 from enum import Enum
+
+logger = logging.getLogger(__name__)
 
 # Enum definitions
 class Motor(Enum):
@@ -15,6 +18,7 @@ class CommandManager:
 
   # Camera controls
   async def start_camera(self):
+    logger.info("Start camera command called.")
     start_camera_command = bytearray(COMMAND_LENGTH)
     start_camera_command[0] = 0xFF
     start_camera_command[1] = 0x01
@@ -26,16 +30,16 @@ class CommandManager:
     start_camera_command[7] = 0x00
     await self.websocket_client.send_message(start_camera_command)
     await self.camera_manager.start_receiving_data()
-    # TODO(MBM): Start a thread to receive camera image data from websocket server and show it on window with opencv. 
 
   async def stop_camera(self):
-    print("Stop camera command has not been implemented yet.")
+    logger.info("Stop camera command has not been implemented yet.")
 
   async def configure_camera(self):
-    print("Configure camera command has not been implemented yet.")
+    logger.info("Configure camera command has not been implemented yet.")
 
   # Motor controls
   async def rotate_motor(self, motor: Motor, angle):
+    logger.info("Rotate motor command called.")
     rotate_command = bytearray(COMMAND_LENGTH)
     rotate_command[0] = 0xFF
     rotate_command[1] = 0x02
@@ -48,18 +52,20 @@ class CommandManager:
     await self.websocket_client.send_message(rotate_command)
 
   async def stop_motor(self, motor: Motor):
-    print("Stop motor command has not been implemented yet.")
+    logger.info("Stop motor command has not been implemented yet.")
 
   # Mode controls
   async def set_manual_mode(self):
-    print("Set manual mode command has not been implemented yet.")
+    logger.info("Set manual mode command has not been implemented yet.")
 
   async def set_auto_mode(self):
-    print("Set auto mode command has not been implemented yet.")
+    logger.info("Set auto mode command has not been implemented yet.")
 
   # Websocket connection controls
   async def connect_websocket_server(self):
+    logger.info("Connect to websocket server command called.")
     await self.websocket_client.connect()
   
   async def disconnect_websocket_server(self):
+    logger.info("Disconnect from websocket server command called.")
     await self.websocket_client.close()
