@@ -43,7 +43,7 @@ void CommandHandler::ExecuteCommand(uint8_t *command, size_t length) {
   } else if (settings_option == 3) {   // System Mode Settings
     // TODO(MBM): Implement later.
   } else {
-    ESP_LOGW(TAG, "Settings option cannot be found!");
+    ESP_LOGW(TAG, "Settings option cannot be found! Given option: %d", settings_option);
   }
 }
 
@@ -56,7 +56,7 @@ void CommandHandler::CameraCommandHandler(uint8_t *command) {
     // Stop camera
     camera_controller_->StopCamera();
   } else {
-    ESP_LOGW(TAG, "Given camera control type(data[2]) cannot be found!");
+    ESP_LOGW(TAG, "Given camera control mode cannot be found! Given mode: %d", camera_control_mode);
   }
 }
 

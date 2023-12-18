@@ -23,16 +23,17 @@ class CommandManager:
     start_camera_command[0] = 0xFF
     start_camera_command[1] = 0x01
     start_camera_command[2] = 0x01
-    start_camera_command[3] = 0x00
-    start_camera_command[4] = 0x00
-    start_camera_command[5] = 0x00
-    start_camera_command[6] = 0x00
-    start_camera_command[7] = 0x00
     await self.websocket_client.send_message(start_camera_command)
     await self.camera_manager.start_receiving_data()
 
   async def stop_camera(self):
-    logger.info("Stop camera command has not been implemented yet.")
+    logger.info("Stop camera command called.")
+    stop_camera_command = bytearray(COMMAND_LENGTH)
+    stop_camera_command[0] = 0xFF
+    stop_camera_command[1] = 0x01
+    stop_camera_command[2] = 0x02
+    await self.camera_manager.stop_receiving_data()
+    await self.websocket_client.send_message(stop_camera_command)
 
   async def configure_camera(self):
     logger.info("Configure camera command has not been implemented yet.")
