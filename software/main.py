@@ -1,16 +1,18 @@
-from src.menu_controller import MenuController
-from src.command_controller import CommandController
-from src.websocket_client import WebSocketClient
-import configs
 import asyncio
+from src.websocket_client import WebSocketClient
+from src.command_manager import CommandManager
+from src.ui_manager import UiManager 
+import configs
+
+class App:
+  async def exec(self):
+    self.websocket_client = WebSocketClient(uri=configs.websocket_uri)
+    self.command_manager = CommandManager(websocket_client=self.websocket_client)
+    self.ui_manager = UiManager(event_loop=asyncio.get_event_loop(), command_manager=self.command_manager)
+    await self.ui_manager.show()
 
 if __name__ == "__main__":
-  client = WebSocketClient(uri=configs.websocket_uri)
-  command_controller = CommandController(client)
-  menu_controller = MenuController(command_controller)
-
-  async def main():
-    await client.connect()
-    await menu_controller.execute()
-
-  asyncio.run(main())
+  try:
+    asyncio.run(App().exec())
+  except KeyboardInterrupt:
+    print("KeyboardInterrupt: Stopping the program.")

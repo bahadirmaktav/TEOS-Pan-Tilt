@@ -1,4 +1,3 @@
-from src.websocket_client import WebSocketClient
 from enum import Enum
 
 # Enum definitions
@@ -9,9 +8,10 @@ class Motor(Enum):
 # Variable definitions
 COMMAND_LENGTH = 8
 
-class CommandController:
-  def __init__(self, client):
-    self.client = client
+class CommandManager:
+  def __init__(self, websocket_client):
+    self.websocket_client = websocket_client
+    # self.camera_manager = camera_manager
 
   # Camera controls
   async def start_camera(self):
@@ -19,7 +19,13 @@ class CommandController:
     start_camera_command[0] = 0xFF
     start_camera_command[1] = 0x01
     start_camera_command[2] = 0x01
-    await self.client.send_message(start_camera_command)
+    start_camera_command[3] = 0x00
+    start_camera_command[4] = 0x00
+    start_camera_command[5] = 0x00
+    start_camera_command[6] = 0x00
+    start_camera_command[7] = 0x00
+    await self.websocket_client.send_message(start_camera_command)
+    # await self.camera_manager.start_camera_data_receive_thread()
     # TODO(MBM): Start a thread to receive camera image data from websocket server and show it on window with opencv. 
 
   async def stop_camera(self):
@@ -39,7 +45,7 @@ class CommandController:
     rotate_command[4] = (angle >> 8) & 0xFF
     rotate_command[5] = angle & 0xFF
     rotate_command[7] = 0x00
-    await self.client.send_message(rotate_command)
+    await self.websocket_client.send_message(rotate_command)
 
   async def stop_motor(self, motor: Motor):
     print("Stop motor command has not been implemented yet.")
@@ -52,5 +58,8 @@ class CommandController:
     print("Set auto mode command has not been implemented yet.")
 
   # Websocket connection controls
-  async def close_websocket_conenction(self):
-    await self.client.close()
+  async def connect_websocket_server(self):
+    await self.websocket_client.connect()
+  
+  async def disconnect_websocket_server(self):
+    await self.websocket_client.close()
