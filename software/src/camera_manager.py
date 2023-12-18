@@ -4,9 +4,9 @@ import cv2
 from PIL import Image, ImageTk
 
 class CameraManager:
-  def __init__(self, websocket_client):
+  def __init__(self, event_loop, websocket_client):
+    self.event_loop = event_loop
     self.websocket_client = websocket_client
-    self.stop_event = asyncio.Event()
 
   def set_ui_manager(self, ui_manager):
     self.ui_manager = ui_manager
@@ -23,8 +23,8 @@ class CameraManager:
       image = Image.fromarray(image)
       image = ImageTk.PhotoImage(image)
 
+      # Set image to tkinter label to show on window
       await self.ui_manager.set_image_label(image)
 
-  async def start_camera_data_receive_thread(self):
-    loop = asyncio.get_event_loop()
-    loop.run_in_executor(None, self.receive_camera_data)
+  async def start_receiving_data(self):
+    self.event_loop.create_task(self.receive_camera_data())

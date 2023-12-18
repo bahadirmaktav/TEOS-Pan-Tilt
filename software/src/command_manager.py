@@ -9,9 +9,9 @@ class Motor(Enum):
 COMMAND_LENGTH = 8
 
 class CommandManager:
-  def __init__(self, websocket_client):
+  def __init__(self, websocket_client, camera_manager):
     self.websocket_client = websocket_client
-    # self.camera_manager = camera_manager
+    self.camera_manager = camera_manager
 
   # Camera controls
   async def start_camera(self):
@@ -25,7 +25,7 @@ class CommandManager:
     start_camera_command[6] = 0x00
     start_camera_command[7] = 0x00
     await self.websocket_client.send_message(start_camera_command)
-    # await self.camera_manager.start_camera_data_receive_thread()
+    await self.camera_manager.start_receiving_data()
     # TODO(MBM): Start a thread to receive camera image data from websocket server and show it on window with opencv. 
 
   async def stop_camera(self):

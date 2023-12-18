@@ -79,8 +79,8 @@ class UiManager(tk.Tk):
     print("Disconnect clicked.")
     await self.command_manager.disconnect_websocket_server()
 
-  def set_image_label(self, image):
+  async def set_image_label(self, image):
     self.image_label.configure(image=image)
     self.image_label.image = image
     self.update_idletasks()
-    self.update()
+    # self.update()
