@@ -17,8 +17,8 @@ extern "C" {
 #endif
 
 CameraController camera_controller;
-ServoMotorController pan_motor_controller(GPIO_NUM_13, 0.5, 2.5, 50, LEDC_TIMER_10_BIT, 0, 180);
-ServoMotorController tilt_motor_controller(GPIO_NUM_15, 0.5, 2.5, 50, LEDC_TIMER_10_BIT, 0, 180);
+ServoMotorController pan_motor_controller(GPIO_NUM_13, LEDC_CHANNEL_0, 0.5, 2.5, 50, LEDC_TIMER_10_BIT, 0, 180);
+ServoMotorController tilt_motor_controller(GPIO_NUM_15, LEDC_CHANNEL_1, 0.5, 2.5, 50, LEDC_TIMER_10_BIT, 0, 180);
 
 void app_main(void) {
   // Initialize components
