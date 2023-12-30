@@ -48,8 +48,7 @@ public:
 
   void StartServer(void);
   void StopServer(httpd_handle_t server);
-  // void SyncSendFrame(httpd_req_t *req, httpd_ws_frame_t *pkt);
-  // void AsyncSendFrame(httpd_handle_t hd, int fd, httpd_ws_frame_t *frame);
+  uint8_t IsServerActive();
   void SyncSendFrame(uint8_t *data, size_t length);
   void AsyncSendFrame(uint8_t *data, size_t length);
 

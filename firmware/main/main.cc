@@ -24,6 +24,7 @@ void app_main(void) {
   // Initialize components
   CommandHandler::Instance().SetCameraController(&camera_controller);
   CommandHandler::Instance().SetServoMotorControllers(&pan_motor_controller, &tilt_motor_controller);
+  ESP_LOGI(TAG, "Components initialized.");
 
   // TODO(MBM) Move NVS into a component.
   // Initialize NVS (Non Volatile Storage)
@@ -33,12 +34,15 @@ void app_main(void) {
     ret = nvs_flash_init();
   }
   ESP_ERROR_CHECK(ret);
+  ESP_LOGI(TAG, "NVS initialized.");
 
   // Connect to WiFi
   WiFi::Instance().Connect();
+  ESP_LOGI(TAG, "WiFi connected.");
 
   // Start WebSocket Server
   WebSocketServer::Instance().StartServer();
+  ESP_LOGI(TAG, "WebSocket server started.");
 }
     
 #ifdef __cplusplus

@@ -35,7 +35,7 @@ void CommandHandler::ExecuteCommand(uint8_t *command, size_t length) {
     ESP_LOGW(TAG, "Sync bytes are wrong!");
     return;
   }
-  CmdRsp command_buff = (CmdRsp)((uint16_t)command[2] * 16 + command[3]);
+  CmdRsp command_buff = (CmdRsp)((uint16_t)command[2] * 256 + command[3]);
   switch (command_buff) {
   case CmdRsp::CMD_WEB_CONF_SET_CONFIGURATIONS:
     ESP_LOGI(TAG, "Command handler of set websocket configurations not implemented yet!");
@@ -78,52 +78,51 @@ void CommandHandler::ExecuteCommand(uint8_t *command, size_t length) {
   }
 }
 
-void CommandHandler::ExecuteCommand(uint8_t *command, size_t length) {
-  if (length != COMMAND_BUFFER_LENGTH) {
-    ESP_LOGI(TAG, "Command message length must be 8!");
-    return;
-  }
-  if (command[0] != 0xFF) {
-    ESP_LOGI(TAG, "Sync byte is wrong!");
-    return;
-  }
-  // TODO(MBM): Checksum control logic will be added.
-  uint8_t settings_option = command[1];
-  if (settings_option == 1) {          // Camera Settings
-    CameraCommandHandler(command);
-  } else if (settings_option == 2) {   // Motor Settings
-    MotorCommandHandler(command);
-  } else if (settings_option == 3) {   // System Mode Settings
-    // TODO(MBM): Implement later.
-  } else {
-    ESP_LOGW(TAG, "Settings option cannot be found! Given option: %d", settings_option);
-  }
+void CommandHandler::GetWebSocketServerStatus() {
+  uint8_t message_buffer[7] = {0xBB, 0xFF, 0x00, 0x00, 0x00, 0xFF, 0xEE};
+  uint8_t is_server_active = WebSocketServer::Instance().IsServerActive();
+  uint16_t command_buffer = CmdRsp::RSP_WEB_STAT_STATUS;
+  message_buffer[2] = (command_buffer >> 8) & 0xFF;
+  message_buffer[3] = command_buffer & 0xFF;
+  message_buffer[4] = is_server_active;
+  WebSocketServer::Instance().SyncSendFrame(message_buffer, sizeof(message_buffer));
+  ESP_LOGI(TAG, "Server status successfully sent.");
 }
 
-void CommandHandler::CameraCommandHandler(uint8_t *command) {
-  uint8_t camera_control_mode = command[2];
-  if (camera_control_mode == 1) {
-    // Start camera
-    camera_controller_->StartCamera();
-  } else if(camera_control_mode == 2) {
-    // Stop camera
-    camera_controller_->StopCamera();
+void CommandHandler::ResetMotorPositionHandler(uint8_t *command, size_t length) {
+  int motor_type = command[4];
+  if (motor_type == 0) {
+    // Pan
+    pan_motor_controller_->RotateToAngle(0);
+    ESP_LOGI(TAG, "Pan motor position reset.");
+  } else if (motor_type == 1) {
+    // Tilt
+    tilt_motor_controller_->RotateToAngle(0);
+    ESP_LOGI(TAG, "Tilt motor position reset.");
   } else {
-    ESP_LOGW(TAG, "Given camera control mode cannot be found! Given mode: %d", camera_control_mode);
+    ESP_LOGW(TAG, "Motor type to reset position cannot found!");
   }
 }
-
-void CommandHandler::MotorCommandHandler(uint8_t *command) {
-  int motor_type = command[2];
-  if (motor_type == 1) {
+  
+void CommandHandler::RotateMotorHandler(uint8_t *command, size_t length) {
+  int motor_type = command[4];
+  if (motor_type == 0) {
     // Rotate pan
-    float angle = ((int)command[3] * 256 + (int)command[4]) / 100.0;
+    float angle = ((int)command[5] * 256 + (int)command[6]) / 100.0;
     ESP_LOGI(TAG, "Pan motor rotation to %f degree started.", angle);
     pan_motor_controller_->RotateToAngle(angle);
-  } else if (motor_type == 2) {
+  } else if (motor_type == 1) {
     // Rotate tilt
-    float angle = ((int)command[3] * 256 + (int)command[4]) / 100.0;
+    float angle = ((int)command[5] * 256 + (int)command[6]) / 100.0;
     ESP_LOGI(TAG, "Tilt motor rotation to %f degree started.", angle);
     tilt_motor_controller_->RotateToAngle(angle);
   }
+}
+
+void CommandHandler::StartCameraStreamHandler() {
+  camera_controller_->StartCamera();
+}
+
+void CommandHandler::StopCameraStreamHandler() {
+  camera_controller_->StopCamera();  
 }

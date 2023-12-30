@@ -50,9 +50,6 @@ private:
   void StartCameraStreamHandler();
   void StopCameraStreamHandler();
 
-  void MotorCommandHandler(uint8_t *command);
-  void CameraCommandHandler(uint8_t *command);
-
 private:
   TaskHandle_t camera_streaming_task_handler_;
   CameraController *camera_controller_;
