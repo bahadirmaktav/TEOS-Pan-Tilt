@@ -6,6 +6,7 @@
  */
 
 #include "CommandHandler.h"
+#include "EnumCommandResponse.h"
 
 static const char *TAG = "COMMAND_HANDLER";
 
@@ -23,6 +24,58 @@ void CommandHandler::SetCameraController(CameraController *camera_controller) {
 void CommandHandler::SetServoMotorControllers(ServoMotorController *pan_motor_controller, ServoMotorController *tilt_motor_controller) {
   pan_motor_controller_ = pan_motor_controller;
   tilt_motor_controller_ = tilt_motor_controller;
+}
+
+void CommandHandler::ExecuteCommand(uint8_t *command, size_t length) {
+  if (length < COMMAND_BUFFER_MIN_LENGTH || length > COMMAND_BUFFER_MAX_LENGTH) {
+    ESP_LOGW(TAG, "Command message length must be between 6 and 32!");
+    return;
+  }
+  if (command[0] != 0xBB || command[1] != 0xFF || command[length - 1] != 0xEE || command[length - 2] != 0xFF) {
+    ESP_LOGW(TAG, "Sync bytes are wrong!");
+    return;
+  }
+  CmdRsp command_buff = (CmdRsp)((uint16_t)command[2] * 16 + command[3]);
+  switch (command_buff) {
+  case CmdRsp::CMD_WEB_CONF_SET_CONFIGURATIONS:
+    ESP_LOGI(TAG, "Command handler of set websocket configurations not implemented yet!");
+    break;
+  case CmdRsp::CMD_WEB_CONF_GET_CONFIGURATIONS:
+    ESP_LOGI(TAG, "Command handler of get websocket configurations not implemented yet!");
+    break;
+  case CmdRsp::CMD_WEB_CONT_RESTART_SERVER:
+    ESP_LOGI(TAG, "Command handler of restart websocket server not implemented yet!");
+    break;
+  case CmdRsp::CMD_WEB_STAT_GET_STATUS:
+    GetWebSocketServerStatus();
+    break;
+  case CmdRsp::CMD_MOT_CONF_SET_CONFIGURATIONS:
+    ESP_LOGI(TAG, "Command handler of set motor configurations not implemented yet!");
+    break;
+  case CmdRsp::CMD_MOT_CONF_GET_CONFIGURATIONS:
+    ESP_LOGI(TAG, "Command handler of get motor configurations not implemented yet!");
+    break;
+  case CmdRsp::CMD_MOT_CONT_RESET_POSITION:
+    ResetMotorPositionHandler(command, length);
+    break;
+  case CmdRsp::CMD_MOT_CONT_ROTATE:
+    RotateMotorHandler(command, length);
+    break;
+  case CmdRsp::CMD_CAM_CONF_SET_CONFIGURATIONS:
+    ESP_LOGI(TAG, "Command handler of set camera configurations not implemented yet!");
+    break;
+  case CmdRsp::CMD_CAM_CONF_GET_CONFIGURATIONS:
+    ESP_LOGI(TAG, "Command handler of get camera configurations not implemented yet!");
+    break;
+  case CmdRsp::CMD_CAM_CONT_START_STREAM:
+    StartCameraStreamHandler();
+    break;
+  case CmdRsp::CMD_CAM_CONT_STOP_STREAM:
+    StopCameraStreamHandler();
+    break;
+  default:
+    break;
+  }
 }
 
 void CommandHandler::ExecuteCommand(uint8_t *command, size_t length) {

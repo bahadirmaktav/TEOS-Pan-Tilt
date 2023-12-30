@@ -1,0 +1,37 @@
+/*
+ * EnumCommandResponse.h
+ *
+ *  Created on: Dec 30, 2023
+ *      Author: Mehmet Bahadır Maktav
+ */
+
+#ifndef ENUM_COMMAND_RESPONSE_H_
+#define ENUM_COMMAND_RESPONSE_H_
+
+enum CmdRsp : uint16_t {
+  // Commands
+    // WebSocket Commands
+  CMD_WEB_CONF_SET_CONFIGURATIONS = 4352,  // x1100
+  CMD_WEB_CONF_GET_CONFIGURATIONS = 4353,  // x1101
+  CMD_WEB_CONT_RESTART_SERVER = 4608,      // x1200
+  CMD_WEB_STAT_GET_STATUS = 4684,          // x1300
+    // Servo Motor Commands
+  CMD_MOT_CONF_SET_CONFIGURATIONS = 8448,  // x2100
+  CMD_MOT_CONF_GET_CONFIGURATIONS = 8449,  // x2101
+  CMD_MOT_CONT_RESET_POSITION = 8704,      // x2200
+  CMD_MOT_CONT_ROTATE = 8705,              // x2201
+    // Camera Commands
+  CMD_CAM_CONF_SET_CONFIGURATIONS = 12544, // x3100      
+  CMD_CAM_CONF_GET_CONFIGURATIONS = 24545, // x3101
+  CMD_CAM_CONT_START_STREAM = 12800,       // x3200
+  CMD_CAM_CONT_STOP_STREAM = 12801,        // x3201
+  CMD_CAM_STAT_GET_STATUS = 13056,         // x3300
+  // Responses
+  RSP_WEB_CONF_CONFIGURATIONS = 4354,      // x1102
+  RSP_WEB_STAT_STATUS = 4685,              // x1301
+  RSP_MOT_CONF_CONFIGURATIONS = 8450,      // x2102
+  RSP_CAM_CONF_CONFIGURATIONS = 24546,     // x3102
+  RSP_CAM_STAT_STATUS = 13057              // x3301
+};
+
+#endif // ENUM_COMMAND_RESPONSE_H_
