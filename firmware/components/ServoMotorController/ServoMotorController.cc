@@ -32,7 +32,7 @@ ServoMotorController::~ServoMotorController() {
 
 void ServoMotorController::RotateToAngle(float angle) {
   uint32_t duty = ((angle * duty_per_angle_) + min_width_duty_);
-  ESP_LOGI(TAG, "Rotating %f angle / %lu duty", angle, duty);
+  ESP_LOGI(TAG, "Rotating to %f angle / %lu duty", angle, duty);
   ledc_set_duty(LEDC_LOW_SPEED_MODE, ledc_channel_, duty);
   ledc_update_duty(LEDC_LOW_SPEED_MODE, ledc_channel_);
 }

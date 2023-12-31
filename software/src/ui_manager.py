@@ -48,11 +48,11 @@ class UiManager(tk.Tk):
     self.motor_controls_label.place(x=75, y=10, width=150, height=38)
     self.motor_controls_label = tk.Label(self.motor_canvas, text="Pan")
     self.motor_controls_label.place(x=15, y=58, width=50, height=32)
-    self.pan_slider = tk.Scale(self.motor_canvas, from_=0, to=100, orient=tk.HORIZONTAL, command=lambda value: self.event_loop.create_task(self.rotate_pan(value)))
+    self.pan_slider = tk.Scale(self.motor_canvas, from_=0, to=180, orient=tk.HORIZONTAL, command=lambda value: self.event_loop.create_task(self.rotate_pan(value)))
     self.pan_slider.place(x=85, y=58, width=200, height=32)
     self.motor_controls_label = tk.Label(self.motor_canvas, text="Tilt")
     self.motor_controls_label.place(x=15, y=98, width=50, height=32)
-    self.pan_slider = tk.Scale(self.motor_canvas, from_=0, to=100, orient=tk.HORIZONTAL, command=lambda value: self.event_loop.create_task(self.rotate_tilt(value)))
+    self.pan_slider = tk.Scale(self.motor_canvas, from_=0, to=180, orient=tk.HORIZONTAL, command=lambda value: self.event_loop.create_task(self.rotate_tilt(value)))
     self.pan_slider.place(x=85, y=98, width=200, height=32)
 
     # WebSocket Connection Controls
@@ -94,11 +94,11 @@ class UiManager(tk.Tk):
 
   async def rotate_pan(self, value):
     logger.info("Rotate pan button clicked.")
-    await self.command_manager.rotate_motor(Motor.PAN, float(value))
+    await self.command_manager.rotate_motor(Motor.PAN, int(value))
 
   async def rotate_tilt(self, value):
     logger.info("Rotate tilt button clicked.")
-    await self.command_manager.rotate_motor(Motor.TILT, float(value))
+    await self.command_manager.rotate_motor(Motor.TILT, int(value))
 
   async def connect_websocket_server(self):
     logger.info("Connect to websocket server button clicked.")
