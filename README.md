@@ -39,13 +39,41 @@ The mechanical system was designed so that the module with the camera can move i
 ![](https://github.com/bahadirmaktav/Teos-Pan-Tilt/blob/develop/demo/3d_design_example.jpg)
 
 ## How To Use
-How To Use
+Teos Pan Tilt is controlled from the user interface that appears on the screen by running the source code in the software folder.</br>
+An example user interface image for the final version of the project is shared below.</br>
+
+![](https://github.com/bahadirmaktav/Teos-Pan-Tilt/blob/develop/demo/gui_example.jpg)
+
+As you can see on the GUI example image, user can control camera, motor and websocket connection on interface. *In this version, the user can first connect to the websocket server and then control the motors and camera after seeing the log message on the console stating that the connection has been started.*
 
 ## Demo
-Demo
+A gif will be added for the demo example.
 
 ## Roadmap
-Roadmap
+- [x] [Firmware]    Setup IDF environment.
+- [x] [Firmware]    Develop servo motor controller interface.
+- [x] [Firmware]    Develop WiFi and WebSocket server components.
+- [x] [Firmware]    Implement esp32-camera library and get image from ESP32-Camera module.
+- [x] [Firmware]    Develop command handler interface.
+- [x] [Firmware]    Test command handler mechanism (with Postman), camera and motor controls separately.
+- [ ] [Firmware]    Fix bug with camera and motors working together.
+- [ ] [Firmware]    Make the camera configurable according to the incoming command from client.
+- [x] [Software]    Setup python virtual environment.
+- [x] [Software]    Develop websocket client interface.
+- [x] [Software]    Develop command manager interface.
+- [x] [Software]    Develop camera manager.
+- [x] [Software]    Develop UI manager which setups window, buttons, display panel.
+- [x] [Software]    Integrate command manager with other manager utilities and attach to UI.
+- [x] [Software]    Test commands sended from GUI with firmware.
+- [ ] [Software]    Integrate an indicator that shows the status of the websocket server. 
+- [ ] [Software]    Add face detection algorithm for the images taken from the camera.
+- [ ] [Software]    Add algorithm for controlling motors automatically according to the position of detected image.
+- [ ] [Software]    Add GUI option for change the system mode between manual and auto.
+- [ ] [Software]    Add GUI option for sending camera configurations to server for setting camera parameters such as resolution etc.
+- [x] [Mechanics]   Develop basic 3D designs for servo motors and ESP32-Camera module.
+- [x] [Mechanics]   Design mechanical parts of pan tilt project and print them with 3D printer.
+- [x] [Mechanics]   Assemble the parts.
+- [x] [Electronics] Make the necessary pin connections for the motors, power supply and camera module board.
 
 ## License
-License
+License information will be added.
