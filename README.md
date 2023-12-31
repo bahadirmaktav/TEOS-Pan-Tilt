@@ -36,7 +36,7 @@ Basically, the functions of the software are as follows.</br>
 The **mechanics** contain 3D design files in 3mf format developed with Fusion 360.</br>
 The mechanical system was designed so that the module with the camera can move in two axes with servo motors.
 
-![](https://github.com/bahadirmaktav/Teos-Pan-Tilt/tree/develop/demo/3d_design_example.jpg)
+![](https://github.com/bahadirmaktav/Teos-Pan-Tilt/blob/develop/demo/3d_design_example.jpg)
 
 ## How To Use
 How To Use
