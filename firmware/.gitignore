@@ -1,5 +1,7 @@
 # IDE Folders/Files
 .vscode
+.cproject
+.project
 
 # ESP-IDF Folders/Files
 .devcontainer
@@ -9,3 +11,4 @@ sdkconfig.old
 managed_components
 components/espressif__esp32-camera
 components/WiFi/WiFiConfig.h
+dependencies.lock

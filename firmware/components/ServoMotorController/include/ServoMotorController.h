@@ -13,7 +13,7 @@
 
 class ServoMotorController {
 public:
-  ServoMotorController(int pwm_gpio_num, float min_width_ms, float max_width_ms, 
+  ServoMotorController(int pwm_gpio_num, ledc_channel_t ledc_channel, float min_width_ms, float max_width_ms, 
                        uint32_t timer_frequency, ledc_timer_bit_t duty_resolution,
                        float min_angle, float max_angle);
   ~ServoMotorController();
@@ -24,6 +24,7 @@ private:
 
 private:
   int pwm_gpio_num_;
+  ledc_channel_t ledc_channel_;
   uint32_t min_width_duty_;
   float duty_per_angle_;
 };

@@ -18,7 +18,8 @@ class CommandHandler;
 #include "CameraController.h"
 #include "ServoMotorController.h"
 
-#define COMMAND_BUFFER_LENGTH 8
+#define COMMAND_BUFFER_MIN_LENGTH 6
+#define COMMAND_BUFFER_MAX_LENGTH 32
 
 class CommandHandler {
 public:
@@ -43,8 +44,11 @@ private:
   ~CommandHandler() {}
   
   // Command handlers
-  void MotorCommandHandler(uint8_t *command);
-  void CameraCommandHandler(uint8_t *command);
+  void GetWebSocketServerStatus();
+  void ResetMotorPositionHandler(uint8_t *command, size_t length);
+  void RotateMotorHandler(uint8_t *command, size_t length);
+  void StartCameraStreamHandler();
+  void StopCameraStreamHandler();
 
 private:
   TaskHandle_t camera_streaming_task_handler_;

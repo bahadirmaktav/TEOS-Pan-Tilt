@@ -41,11 +41,20 @@ void WebSocketServer::StartServer(void) {
 
 void WebSocketServer::StopServer(httpd_handle_t server) {
   if (httpd_stop(server_) == ESP_OK) {
+    server_ = NULL;
     ESP_LOGI(TAG, "Server stopped successfully");
     return;
   }
   ESP_LOGI(TAG, "Error stoping server!");
   return;
+}
+
+uint8_t WebSocketServer::IsServerActive() {
+  uint8_t active = 0;
+  if (server_ != NULL) {
+    active = 1;
+  }
+  return active;
 }
 
 /**
